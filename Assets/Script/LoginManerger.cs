@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LoginManerger : MonoBehaviour
 {
-    [SerializeField] Button sumitButten;
+    [SerializeField] Button sumitButton;
     [SerializeField] InputField[] inputField = new InputField[2];
     [SerializeField] Text Message;
     [SerializeField] GameObject loginPannal;
@@ -28,7 +28,7 @@ public class LoginManerger : MonoBehaviour
 
     void Start()
     {
-        sumitButten.onClick.AddListener(Login);
+        sumitButton.onClick.AddListener(Login);
 
         //why unity use passwordinput need use script??
         //why i can't just set in the ui??
@@ -56,19 +56,19 @@ public class LoginManerger : MonoBehaviour
         //test the account isn't right.
         WebManerger.Instance.Email = inputField[0].text;
         WebManerger.Instance.Password = inputField[1].text;
-        sumitButten.GetComponentInChildren<Text>().text = "Loading...";
+        sumitButton.GetComponentInChildren<Text>().text = "Loading...";
         string testMessage = await WebManerger.Instance.GetPluginfor(0,"BaseInformation");
 
         if (testMessage == "Error")
         {
             WebManerger.Instance.Email = "";
             WebManerger.Instance.Password = "";
-            sumitButten.GetComponentInChildren<Text>().text = "確　認";
+            sumitButton.GetComponentInChildren<Text>().text = "確　認";
             Message.color = errorColor;
             Message.text = "帳號或密碼錯誤";
             return;
         }
-        sumitButten.GetComponentInChildren<Text>().text = "成 功！";
+        sumitButton.GetComponentInChildren<Text>().text = "成 功！";
         PlayerPrefs.SetInt("LoginState", 1);
         PlayerPrefs.SetString("Email", inputField[0].text);
         PlayerPrefs.SetString("Password", inputField[1].text);
