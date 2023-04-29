@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -11,11 +10,22 @@ public class LoginManerger : MonoBehaviour
     [SerializeField] Button sumitButten;
     [SerializeField] InputField[] inputField = new InputField[2];
     [SerializeField] Text Message;
+    [SerializeField] GameObject loginPannal;
     [SerializeField] Color errorColor;
     [SerializeField] Color normalColor;
 
-    bool loginState;
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+        //if login before, skip the login page.
+        if (PlayerPrefs.GetInt("LoginState", -1) != -1 )
+        {
+            WebManerger.Instance.Email = PlayerPrefs.GetString("Email");
+            WebManerger.Instance.Password = PlayerPrefs.GetString("Password");
+            SceneManager.LoadScene(1);
+        }
+    }
+
     void Start()
     {
         sumitButten.onClick.AddListener(Login);
@@ -23,6 +33,8 @@ public class LoginManerger : MonoBehaviour
         //why unity use passwordinput need use script??
         //why i can't just set in the ui??
         inputField[1].contentType = InputField.ContentType.Password;
+
+        loginPannal.transform.DOLocalMoveY(-40, 1f).SetEase(Ease.InOutSine);
     }
 
     bool IsvalidEmail(string email)
@@ -57,9 +69,20 @@ public class LoginManerger : MonoBehaviour
             return;
         }
         sumitButten.GetComponentInChildren<Text>().text = "жи е\бI";
+        PlayerPrefs.SetInt("LoginState", 1);
+        PlayerPrefs.SetString("Email", inputField[0].text);
+        PlayerPrefs.SetString("Password", inputField[1].text);
 
-        await Task.Delay(1000);
-        SceneManager.LoadSceneAsync(1);
+        await Task.Delay(500);
+
+        Sequence aniSequence = DOTween.Sequence();
+        aniSequence.Append(loginPannal.transform.DOLocalMoveY(-150, .3f).SetEase(Ease.InOutSine));
+        aniSequence.Append(loginPannal.transform.DOLocalMoveY(1350, .2f).SetEase(Ease.InOutSine));
+
+        aniSequence.OnComplete(() =>
+        {
+            SceneManager.LoadScene(1);
+        });
     }
 
 }
