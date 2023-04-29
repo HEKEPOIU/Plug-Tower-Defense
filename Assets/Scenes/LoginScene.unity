@@ -1672,7 +1672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba7050a22cdbd5641a3c02da84a0cc8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sumitButten: {fileID: 774537551}
+  sumitButton: {fileID: 774537551}
   inputField:
   - {fileID: 1928484283}
   - {fileID: 2089860373}
