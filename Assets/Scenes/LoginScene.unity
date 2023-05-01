@@ -950,8 +950,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cadd4de8f17b9d45b3cfa38cfed9682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: https://dec6-2401-e180-8810-c8c7-b3-55cf-a244-b83e.ngrok-free.app
+  serverIP: https://0e11-2401-e180-8d02-267-e080-2218-7562-c361.ngrok-free.app
   tapoIP:
+  - 192.168.252.149
   - 192.168.252.149
 --- !u!4 &1179562508
 Transform:
