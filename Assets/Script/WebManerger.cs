@@ -9,7 +9,8 @@ public class WebManerger : MonoBehaviour
 {
     static WebManerger instance;
     [SerializeField] string serverIP; //wait for change to socket.
-    [SerializeField] ObservableCollection<string> tapoIP;
+    [SerializeField] List<string> tapoIPList;
+    ObservableCollection<string> tapoIP;
     public string Email { get; set; }
     public string Password { get; set; }
 
@@ -21,7 +22,7 @@ public class WebManerger : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-
+        tapoIP = new ObservableCollection<string>(tapoIPList);
     }
     public static WebManerger Instance
     {

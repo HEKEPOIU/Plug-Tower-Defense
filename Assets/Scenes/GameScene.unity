@@ -382,7 +382,52 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
+--- !u!1 &174396449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 174396451}
+  - component: {fileID: 174396450}
+  m_Layer: 0
+  m_Name: GameManerger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &174396450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174396449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3683ac4410945ef4ab8674b8a055048f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManerger: {fileID: 477090947}
+--- !u!4 &174396451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174396449}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 238.03703, y: 78.47654, z: 4.8805547}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &200824348
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +671,7 @@ MonoBehaviour:
   settingButton: {fileID: 1050001999}
   closeButton: {fileID: 659425838}
   plugPannal: {fileID: 1235919291}
+  monetBarText: {fileID: 1167927591}
   plugList: {fileID: 912736172}
   plugPrefab: {fileID: 5654852108864923975, guid: b37bb002a4cc4f64caf54b1684c2f83e, type: 3}
 --- !u!1 &659425836
@@ -978,8 +1024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverIP: https://3b91-180-218-236-133.ngrok-free.app
-  tapoIP:
-  - 192.168.252.149
+  tapoIPList: []
 --- !u!4 &738397483
 Transform:
   m_ObjectHideFlags: 0
@@ -1024,7 +1069,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.65
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1477,7 +1522,7 @@ GameObject:
   - component: {fileID: 1167927592}
   - component: {fileID: 1167927591}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: MonetBarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1536,7 +1581,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10000
+  m_Text: 0
 --- !u!222 &1167927592
 CanvasRenderer:
   m_ObjectHideFlags: 0

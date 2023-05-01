@@ -951,8 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverIP: https://0e11-2401-e180-8d02-267-e080-2218-7562-c361.ngrok-free.app
-  tapoIP:
-  - 192.168.252.149
+  tapoIPList:
   - 192.168.252.149
 --- !u!4 &1179562508
 Transform:
@@ -1058,7 +1057,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Decnovpk9201
+  m_Text: 
 --- !u!222 &1400271539
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1158,7 +1157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: decnovpk92805@gmail.com
+  m_Text: 
 --- !u!222 &1523181829
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1350,7 +1349,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: decnovpk92805@gmail.com
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1831,7 +1830,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: Decnovpk9201
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0

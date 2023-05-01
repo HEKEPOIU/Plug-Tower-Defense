@@ -15,6 +15,7 @@ public class UIManerger : MonoBehaviour
     [SerializeField] Button settingButton;
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
+    [SerializeField] Text monetBarText;
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
@@ -101,5 +102,10 @@ public class UIManerger : MonoBehaviour
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
         plugs.Add(plugButton);
         plugButton.GetComponent<Toggle>().isOn = Convert.ToBoolean((await WebManerger.Instance.GetPluginfor(index, "BaseInformation")).Split(" ")[1]);
+    }
+
+    public void MoneyChange(string value)
+    {
+        monetBarText.text = value;
     }
 }
