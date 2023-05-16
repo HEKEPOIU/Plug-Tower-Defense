@@ -3,39 +3,43 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class LoginManerger : MonoBehaviour
+public class LoginManager : MonoBehaviour
 {
     [SerializeField] Button sumitButton;
+    [SerializeField] Button nextButton;
     [SerializeField] InputField[] inputField = new InputField[2];
-    [SerializeField] Text Message;
+    [SerializeField] Text message;
     [SerializeField] GameObject loginPannal;
     [SerializeField] Color errorColor;
     [SerializeField] Color normalColor;
+    [SerializeField] GameObject[] panel; 
 
 
     private void Awake()
     {
         //if login before, skip the login page.
-        if (PlayerPrefs.GetInt("LoginState", -1) != -1 )
-        {
-            WebManerger.Instance.Email = PlayerPrefs.GetString("Email");
-            WebManerger.Instance.Password = PlayerPrefs.GetString("Password");
-            SceneManager.LoadScene(1);
-        }
+        // if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
+        // WebManager.Instance.Email = PlayerPrefs.GetString("Email");
+        // WebManager.Instance.Password = PlayerPrefs.GetString("Password");
+        // WebManager.Instance.tapoIPList.Add(PlayerPrefs.GetString("PlugIp"));
+        // SceneManager.LoadScene(1);
     }
 
     void Start()
     {
         sumitButton.onClick.AddListener(Login);
+        nextButton.onClick.AddListener(Next);
 
-        //why unity use passwordinput need use script??
+        //why unity use passWordInput need use script??
         //why i can't just set in the ui??
         inputField[1].contentType = InputField.ContentType.Password;
 
         loginPannal.transform.DOLocalMoveY(-40, 1f).SetEase(Ease.InOutSine);
     }
+
 
     bool IsvalidEmail(string email)
     {
@@ -44,34 +48,44 @@ public class LoginManerger : MonoBehaviour
         else return false;
         
     }
-    async void Login()
+    void Next()
     {
-        Message.color = Color.clear;
+        message.color = Color.clear;
         if ( !IsvalidEmail(inputField[0].text) )
         {
-            Message.color = errorColor;
-            Message.text = "±b∏π•≤∂∑¨∞Email";
+            message.color = errorColor;
+            message.text = "Â∏≥ËôüÂøÖÈ†àÁÇ∫Email";
             return;
         }
         //test the account isn't right.
-        WebManerger.Instance.Email = inputField[0].text;
-        WebManerger.Instance.Password = inputField[1].text;
+        WebManager.Instance.Email = inputField[0].text;
+        WebManager.Instance.Password = inputField[1].text;
+        panel[0].SetActive(false);
+        panel[1].SetActive(true);
+    }
+    async void Login()
+    {
+        WebManager.Instance.TapoIP[0] = inputField[2].text;
         sumitButton.GetComponentInChildren<Text>().text = "Loading...";
-        string testMessage = await WebManerger.Instance.GetPluginfor(0,"BaseInformation");
+        string testMessage = await WebManager.Instance.GetPlugin(0,"BaseInformation");
 
         if (testMessage == "Error")
         {
-            WebManerger.Instance.Email = "";
-            WebManerger.Instance.Password = "";
-            sumitButton.GetComponentInChildren<Text>().text = "ΩT°@ª{";
-            Message.color = errorColor;
-            Message.text = "±b∏π©Œ±KΩXø˘ª~";
+            WebManager.Instance.Email = "";
+            WebManager.Instance.Password = "";
+            WebManager.Instance.TapoIP[0] = "";
+            panel[0].SetActive(true);
+            panel[1].SetActive(false);
+            sumitButton.GetComponentInChildren<Text>().text = "Á¢∫„ÄÄË™ç";
+            message.color = errorColor;
+            message.text = "Â∏≥Ëôü/ÂØÜÁ¢ºÊàñÊèíÂ∫ßIPÈåØË™§";
             return;
         }
-        sumitButton.GetComponentInChildren<Text>().text = "¶® •\°I";
+        sumitButton.GetComponentInChildren<Text>().text = "Êàê ÂäüÔºÅ";
         PlayerPrefs.SetInt("LoginState", 1);
         PlayerPrefs.SetString("Email", inputField[0].text);
         PlayerPrefs.SetString("Password", inputField[1].text);
+        PlayerPrefs.SetString("PlugIp", inputField[2].text);
 
         await Task.Delay(500);
 

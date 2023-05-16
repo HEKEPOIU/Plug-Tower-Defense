@@ -5,44 +5,43 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 //this Class Control all of Plug web request.
-public class WebManerger : MonoBehaviour
+public class WebManager : MonoBehaviour
 {
-    static WebManerger instance;
+    static WebManager _instance;
     [SerializeField] string serverIP; //wait for change to socket.
-    [SerializeField] List<string> tapoIPList;
-    ObservableCollection<string> tapoIP;
+    public List<string> tapoIPList;
+    ObservableCollection<string> _tapoIP;
     public string Email { get; set; }
     public string Password { get; set; }
 
     private void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-        tapoIP = new ObservableCollection<string>(tapoIPList);
+        _tapoIP = new ObservableCollection<string>(tapoIPList);
     }
-    public static WebManerger Instance
+    public static WebManager Instance
     {
         get
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = new WebManerger();
+                _instance = new WebManager();
             }
-            return instance;
+            return _instance;
         }
     }
-    public ObservableCollection<string> TapoIP { get {  return tapoIP; } set {  tapoIP = value; } }
-    public string ServerIP { get { return serverIP; } set { serverIP = value; } }
+    public ObservableCollection<string> TapoIP { get => _tapoIP; set => _tapoIP = value; }
+    public string ServerIP { get => serverIP; set => serverIP = value; }
 
-    //取代協成的c#預設寫法,由於他可以回傳東西，所以我用這個。
-    //task後面要寫要傳回的東西。
-    public async Task<string> GetPluginfor(int which,string _whatTodo)
+
+    public async Task<string> GetPlugin(int which,string whatTodo)
     {
-        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + tapoIP[which] +"/"+_whatTodo);
+        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + _tapoIP[which] +"/"+whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 
@@ -51,8 +50,7 @@ public class WebManerger : MonoBehaviour
         
         while (!request.isDone)
         {
-            Debug.Log("執行中");
-            await Task.Yield();//這裡純等待執行完畢。
+            await Task.Yield();
 
         }
 
@@ -67,11 +65,13 @@ public class WebManerger : MonoBehaviour
 
 
     }
+
+
     public async Task<string> SwitchPlugin(int which, bool isOn)
     {
-        string _whatTodo = isOn ? "On" : "Off";
+        string whatTodo = isOn ? "On" : "Off";
 
-        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + tapoIP[which] + "/" + _whatTodo);
+        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + _tapoIP[which] + "/" + whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 
@@ -80,8 +80,7 @@ public class WebManerger : MonoBehaviour
 
         while (!request.isDone)
         {
-            Debug.Log("執行中");
-            await Task.Yield();//這裡純等待執行完畢。
+            await Task.Yield();
 
         }
 
