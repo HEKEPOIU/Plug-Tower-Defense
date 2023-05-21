@@ -21,11 +21,11 @@ public class LoginManager : MonoBehaviour
     private void Awake()
     {
         //if login before, skip the login page.
-        // if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
-        // WebManager.Instance.Email = PlayerPrefs.GetString("Email");
-        // WebManager.Instance.Password = PlayerPrefs.GetString("Password");
-        // WebManager.Instance.tapoIPList.Add(PlayerPrefs.GetString("PlugIp"));
-        // SceneManager.LoadScene(1);
+        if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
+        WebManager.Instance.Email = PlayerPrefs.GetString("Email");
+        WebManager.Instance.Password = PlayerPrefs.GetString("Password");
+        WebManager.Instance.TapoIP.Add(PlayerPrefs.GetString("PlugIp01"));
+        SceneManager.LoadScene(1);
     }
 
     void Start()
@@ -65,15 +65,15 @@ public class LoginManager : MonoBehaviour
     }
     async void Login()
     {
-        WebManager.Instance.TapoIP[0] = inputField[2].text;
+        WebManager.Instance.TapoIP.Add(inputField[2].text);
         sumitButton.GetComponentInChildren<Text>().text = "Loading...";
-        string testMessage = await WebManager.Instance.GetPlugin(0,"BaseInformation");
+        string testMessage = await WebManager.Instance.GetPluginSocket(0,"BaseInformation");
 
         if (testMessage == "Error")
         {
             WebManager.Instance.Email = "";
             WebManager.Instance.Password = "";
-            WebManager.Instance.TapoIP[0] = "";
+            WebManager.Instance.TapoIP.Clear();
             panel[0].SetActive(true);
             panel[1].SetActive(false);
             sumitButton.GetComponentInChildren<Text>().text = "確　認";
@@ -85,7 +85,7 @@ public class LoginManager : MonoBehaviour
         PlayerPrefs.SetInt("LoginState", 1);
         PlayerPrefs.SetString("Email", inputField[0].text);
         PlayerPrefs.SetString("Password", inputField[1].text);
-        PlayerPrefs.SetString("PlugIp", inputField[2].text);
+        PlayerPrefs.SetString("PlugIp01", inputField[2].text);
 
         await Task.Delay(500);
 

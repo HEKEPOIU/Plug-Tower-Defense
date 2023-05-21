@@ -1,5 +1,9 @@
+
+using System.Net.Sockets;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -7,41 +11,80 @@ using UnityEngine.Networking;
 //this Class Control all of Plug web request.
 public class WebManager : MonoBehaviour
 {
-    static WebManager _instance;
+    public static WebManager Instance { get; private set; }
+
     [SerializeField] string serverIP; //wait for change to socket.
-    public List<string> tapoIPList;
-    ObservableCollection<string> _tapoIP;
+
+    ObservableCollection<string> tapoIP = new ObservableCollection<string>();
     public string Email { get; set; }
     public string Password { get; set; }
 
-    private void Awake()
+    void Awake()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-        _tapoIP = new ObservableCollection<string>(tapoIPList);
     }
-    public static WebManager Instance
+    public ObservableCollection<string> TapoIP { get =>tapoIP; set=> tapoIP = value; }
+    public string ServerIP { get; set; }
+
+    #region Socket Version
+
+    public async Task<string> GetPluginSocket(int which, string whatTodo)
     {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = new WebManager();
-            }
-            return _instance;
-        }
+        //創建客戶端，並且等待連線。
+        Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
+        await tcpClient.ConnectAsync(serverIP,8888);
+        
+        //成功連線後準備需要送出的訊息，並送出。
+        string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
+        byte[] data = Encoding.UTF8.GetBytes(message);
+        await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
+        
+        //準備用來接收訊息的buffer，因為他是會傳byte過來，然後等待回復bytes長度，並解碼訊息。
+        byte[] receiveBuffer = new byte[1024];
+        int bytesRead = await tcpClient.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), SocketFlags.None);
+        string receivedMessage  = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
+
+        return receivedMessage;
     }
-    public ObservableCollection<string> TapoIP { get => _tapoIP; set => _tapoIP = value; }
-    public string ServerIP { get => serverIP; set => serverIP = value; }
 
-
-    public async Task<string> GetPlugin(int which,string whatTodo)
+    public async Task<string> SwitchPluginSocket(int which, bool isOn)
     {
-        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + _tapoIP[which] +"/"+whatTodo);
+        //創建客戶端，並且等待連線。
+        Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
+        await tcpClient.ConnectAsync(serverIP,8888);
+        
+        //成功連線後準備需要送出的訊息，並送出。
+        string whatTodo = isOn ? "On" : "Off";
+        print(whatTodo);
+        string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
+        byte[] data = Encoding.UTF8.GetBytes(message);
+        await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
+        
+        //準備用來接收訊息的buffer，因為他是會傳byte過來，然後等待回復bytes長度，並解碼訊息。
+        byte[] receiveBuffer = new byte[1024];
+        int bytesRead = await tcpClient.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), SocketFlags.None);
+        string receivedMessage  = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
+
+        return receivedMessage;
+    }
+    
+    
+
+    #endregion
+    
+    
+
+    
+    
+    #region Http Version
+    public async Task<string> GetPluginHttp(int which,string whatTodo)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + tapoIP[which] +"/"+whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 
@@ -60,18 +103,18 @@ public class WebManager : MonoBehaviour
         }
         else
         {
-            return "Error";
+                return "Error";
         }
 
 
     }
 
 
-    public async Task<string> SwitchPlugin(int which, bool isOn)
+    public async Task<string> SwitchPluginHttp(int which, bool isOn)
     {
         string whatTodo = isOn ? "On" : "Off";
 
-        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + _tapoIP[which] + "/" + whatTodo);
+        UnityWebRequest request = UnityWebRequest.Get(serverIP + "/" + Email + "/" + Password + "/" + tapoIP[which] + "/" + whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 
@@ -96,4 +139,5 @@ public class WebManager : MonoBehaviour
 
     }
 
+    #endregion
 }

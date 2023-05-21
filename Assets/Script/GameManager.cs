@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [FormerlySerializedAs("uiManerger")] [SerializeField] UIManager uiManager;
-    int _money = 0;
-    float _currentTime = 0;
-    float _nextTime = 0;
+    [SerializeField] UIManager uiManager;
+    int money = 0;
+    float currentTime = 0;
+    float nextTime = 0;
     [SerializeField] float moneyJumpSpeed = 1;
     // Start is called before the first frame update
     void Start()
@@ -18,14 +18,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _currentTime += Time.deltaTime;
+        currentTime += Time.deltaTime;
 
         MoneyJump(moneyJumpSpeed);
     }
 
     void MoneyJump(float speed,int moneyMult = 1)
     {
-        if (!(_currentTime > _nextTime)) return;
+        if (!(currentTime > nextTime)) return;
         int openPlugnum = 0;
         foreach (var item in uiManager.plugsToggleList)
         {
@@ -34,8 +34,8 @@ public class GameManager : MonoBehaviour
                 openPlugnum++;
             }
         }
-        _money += openPlugnum * moneyMult;
-        uiManager.MoneyChange(_money.ToString());
-        _nextTime = _currentTime + speed;
+        money += openPlugnum * moneyMult;
+        uiManager.MoneyChange(money.ToString());
+        nextTime = currentTime + speed;
     }
 }
