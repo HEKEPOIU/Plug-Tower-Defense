@@ -9,8 +9,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip plugIconAudio;
+
     [SerializeField] Toggle musicToggle;
     [SerializeField] Toggle downListToggle;
     [SerializeField] Button settingButton;
@@ -39,7 +38,7 @@ public class UIManager : MonoBehaviour
             int p = i; //如果直接寫i會出現i直接變成最大值，好像是因為觸發的時候，i這東西已經跑完了，所以他會死掉，所以用一個p來保持原本狀態。
             plugs[i].GetComponent<Toggle>().onValueChanged.AddListener(async (bool change) =>
             {
-                audioSource.PlayOneShot(plugIconAudio);
+                MusicManager.Instance.PlayPlugAudio();
                 await WebManager.Instance.SwitchPluginSocket(p, change);
             });
         }
@@ -64,7 +63,7 @@ public class UIManager : MonoBehaviour
     }
     void ToggleMusic(bool isMute)
     {
-        audioSource.mute = !isMute;
+        MusicManager.Instance.MuteMusic(!isMute);
     }
     void ToggleDownlist(bool isDownListVisible)
     {

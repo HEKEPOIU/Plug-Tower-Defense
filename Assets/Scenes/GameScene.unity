@@ -206,13 +206,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 841139834}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
+      - m_Target: {fileID: 1741857142}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: PlayNextWaveAudio
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: d560c85fa7412f345a4c0fbb859b15ec, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -665,8 +665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74191d5d3377db24cadfb1fecb923c0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 841139834}
-  plugIconAudio: {fileID: 8300000, guid: c59152c66fc18f54a8a1e49dcc47783b, type: 3}
   musicToggle: {fileID: 1848811786}
   downListToggle: {fileID: 140148225}
   settingButton: {fileID: 1050001999}
@@ -759,7 +757,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 659425839}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1741857142}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: PlayUiAudio
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &659425839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1025,8 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cadd4de8f17b9d45b3cfa38cfed9682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverIP: https://3b91-180-218-236-133.ngrok-free.app
-  tapoIPList: []
+  serverIP: 
 --- !u!4 &738397483
 Transform:
   m_ObjectHideFlags: 0
@@ -1083,7 +1092,7 @@ AudioSource:
   m_GameObject: {fileID: 741663135}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -2773807760529455510, guid: f6b451f48628e3d499d3df5d92d68ef8, type: 2}
+  OutputAudioMixerGroup: {fileID: 360164804923540587, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.65
@@ -1211,7 +1220,7 @@ AudioSource:
   m_GameObject: {fileID: 809494579}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 8340276259029689497, guid: f6b451f48628e3d499d3df5d92d68ef8, type: 2}
+  OutputAudioMixerGroup: {fileID: 5832135184889148220, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.65
@@ -1324,7 +1333,7 @@ AudioSource:
   m_GameObject: {fileID: 841139833}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -8018940761464650456, guid: f6b451f48628e3d499d3df5d92d68ef8, type: 2}
+  OutputAudioMixerGroup: {fileID: -2855725581002918008, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.65
@@ -2636,6 +2645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1741857141}
+  - component: {fileID: 1741857142}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -2662,6 +2672,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1741857142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741857140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112e1e9ca80144efaf9d9204f09f2656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMixer: {fileID: 24100000, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
+  uiAudioSource: {fileID: 841139834}
+  plugAudioSource: {fileID: 741663137}
+  nextWaveAudioSource: {fileID: 809494581}
+  plugAudio: {fileID: 8300000, guid: c59152c66fc18f54a8a1e49dcc47783b, type: 3}
+  uiAudio: {fileID: 8300000, guid: 03d450475ba9b5b45a8ede42489f6a48, type: 3}
+  nextWaveAudio: {fileID: 8300000, guid: d560c85fa7412f345a4c0fbb859b15ec, type: 3}
 --- !u!1 &1848811781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,7 +2857,7 @@ AudioSource:
   m_GameObject: {fileID: 2034403119}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
+  OutputAudioMixerGroup: {fileID: 3274192072326065478, guid: e38c703712873e64ab5eee117013d8ec, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.65
