@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     Image musicImage;
     readonly List<GameObject> plugs = new List<GameObject>();
     public List<Toggle> plugsToggleList;
+    public List<InputField> plugsInputList;
     // Start is called before the first frame update
     async void Start()
     {
@@ -88,21 +89,36 @@ public class UIManager : MonoBehaviour
             isplugPannalVisible = true;
         }
     }
+
+    public void SwitchPlugName()
+    {
+        foreach (InputField input in plugsInputList)
+        {
+            input.interactable = !input.interactable;
+        }
+    }
+    
     async Task AddPlugIcon(int index)
     {
         GameObject plugButton = Instantiate(plugPrefab, plugList.transform, false);
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
         try
         {
+            string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
+            InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
             Toggle toggle = plugButton.GetComponent<Toggle>();
-            toggle.isOn = Convert.ToBoolean((await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ")[1]);
+            plugsInput.text = plugInform[3];
+            toggle.isOn = Convert.ToBoolean(plugInform[1]);
+            
             plugs.Add(plugButton);
             plugsToggleList.Add(toggle);
+            plugsInputList.Add(plugsInput);
         }
         catch (Exception e)
         {
             print(e);
             print("找不到對應IP插座。");
+            Destroy(plugButton);
             return;
         }
 
@@ -110,6 +126,6 @@ public class UIManager : MonoBehaviour
 
     public void MoneyChange(string value)
     {
-        monetBarText.text = value;
+        monetBarText.text = "$ "+ value;
     }
 }
