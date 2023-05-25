@@ -33,18 +33,18 @@ public class WebManager : MonoBehaviour
 
     public async Task<string> GetPluginSocket(int which, string whatTodo)
     {
-        //?±ìÖB¢•‚û¨Û??Ã›œ†¸@?©z
+        
         try
         {
             Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             await tcpClient.ConnectAsync(ServerIP, 8888);
 
-            //‚á÷Õ¸@?“¿??„záûƒßµÌÇ»?›Ÿ¨Û?ƒßµÌ©z
+            
             string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
             byte[] data = Encoding.UTF8.GetBytes(message);
             await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
 
-            //??Í[?Õ†²?›ŸÇ»buffer¨Û¶~?ÛæŒë©›?byte½–?¨Û?“¿Ã›œ†Ï¶ı°bytes‰©ƒH¨Û?Ùváå?›Ÿ©z
+            
             byte[] receiveBuffer = new byte[1024];
             int bytesRead = await tcpClient.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), SocketFlags.None);
             string receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
@@ -52,24 +52,24 @@ public class WebManager : MonoBehaviour
         }
         catch
         {
-            print("ú¶½?šP?");
+            print("ä¼ºæœå™¨é€£çµå¤±æ•—ã€‚");
             return "Error";
         }
     }
 
     public async Task<string> SwitchPluginSocket(int which, bool isOn)
     {
-        //?±ìÖB¢•‚û¨Û??Ã›œ†¸@?©z
+
         Socket tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream,ProtocolType.Tcp);
         await tcpClient.ConnectAsync(ServerIP,8888);
         
-        //‚á÷Õ¸@?“¿??„záûƒßµÌÇ»?›Ÿ¨Û?ƒßµÌ©z
+
         string whatTodo = isOn ? "On" : "Off";
         string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
         byte[] data = Encoding.UTF8.GetBytes(message);
         await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
         
-        //??Í[?Õ†²?›ŸÇ»buffer¨Û¶~?ÛæŒë©›?byte½–?¨Û?“¿Ã›œ†Ï¶ı°bytes‰©ƒH¨Û?Ùváå?›Ÿ©z
+
         byte[] receiveBuffer = new byte[1024];
         int bytesRead = await tcpClient.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), SocketFlags.None);
         string receivedMessage  = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);

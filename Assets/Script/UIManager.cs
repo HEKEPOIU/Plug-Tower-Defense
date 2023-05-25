@@ -11,13 +11,14 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] Toggle musicToggle;
-    [SerializeField] Toggle downListToggle;
     [SerializeField] Button settingButton;
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
     [SerializeField] Text monetBarText;
     [SerializeField] Sprite musicOnSprite;
     [SerializeField] Sprite musicOffSprite;
+    [SerializeField] Button addPlugButton;
+    [SerializeField] InputField ipInputField;
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
@@ -31,9 +32,13 @@ public class UIManager : MonoBehaviour
     {
         musicImage = musicToggle.GetComponent<Image>();
         musicToggle.onValueChanged.AddListener(ToggleMusic);
-        // downListToggle.onValueChanged.AddListener(ToggleDownlist);
         settingButton.onClick.AddListener(TogglePlugPannal);
         closeButton.onClick.AddListener(TogglePlugPannal);
+        addPlugButton.onClick.AddListener(() =>
+        {
+            WebManager.Instance.TapoIP.Add(ipInputField.text);
+            ipInputField.text = "";
+        });
 
         //init Plug
 
@@ -61,20 +66,23 @@ public class UIManager : MonoBehaviour
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            Destroy(plugs[e.OldStartingIndex]);
-            plugs.RemoveAt(e.OldStartingIndex);
-            plugsToggleList.RemoveAt(e.OldStartingIndex);
+            try
+            {
+                Destroy(plugs[e.OldStartingIndex]);
+                plugs.RemoveAt(e.OldStartingIndex);
+                plugsToggleList.RemoveAt(e.OldStartingIndex);
+
+            }
+            catch (Exception exception)
+            {
+                print(exception);
+            }
         }
     }
     void ToggleMusic(bool isMute)
     {
         MusicManager.Instance.MuteMusic(!isMute);
         musicImage.sprite = !isMute ? musicOnSprite : musicOffSprite;
-    }
-    void ToggleDownlist(bool isDownListVisible)
-    {
-        if (isDownListVisible) downListToggle.transform.DOMoveY(-190,.5f);
-        else downListToggle.transform.DOMoveY(0, .5f);
     }
     void TogglePlugPannal()
     {
@@ -119,6 +127,7 @@ public class UIManager : MonoBehaviour
             print(e);
             print("找不到對應IP插座。");
             Destroy(plugButton);
+            
             return;
         }
 
