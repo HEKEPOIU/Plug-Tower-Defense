@@ -12,8 +12,7 @@ using UnityEngine.Networking;
 public class WebManager : MonoBehaviour
 {
     public static WebManager Instance { get; private set; }
-    
-    ObservableCollection<string> tapoIP = new ObservableCollection<string>();
+
     public string Email { get; set; }
     public string Password { get; set; }
 
@@ -26,7 +25,8 @@ public class WebManager : MonoBehaviour
         }
         else Destroy(gameObject);
     }
-    public ObservableCollection<string> TapoIP { get =>tapoIP; set=> tapoIP = value; }
+    public ObservableCollection<string> TapoIP { get; } = new ObservableCollection<string>();
+
     public string ServerIP { get; set; }
 
     #region Socket Version
@@ -40,7 +40,7 @@ public class WebManager : MonoBehaviour
             await tcpClient.ConnectAsync(ServerIP, 8888);
 
             
-            string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
+            string message = Email + " " + Password + " " + TapoIP[which] + " " + whatTodo;
             byte[] data = Encoding.UTF8.GetBytes(message);
             await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
 
@@ -65,7 +65,7 @@ public class WebManager : MonoBehaviour
         
 
         string whatTodo = isOn ? "On" : "Off";
-        string message = Email + " " + Password + " " + tapoIP[which] + " " + whatTodo;
+        string message = Email + " " + Password + " " + TapoIP[which] + " " + whatTodo;
         byte[] data = Encoding.UTF8.GetBytes(message);
         await tcpClient.SendAsync(new ArraySegment<byte>(data), SocketFlags.None);
         
@@ -81,14 +81,10 @@ public class WebManager : MonoBehaviour
 
     #endregion
     
-    
-
-    
-    
     #region Http Version
     public async Task<string> GetPluginHttp(int which,string whatTodo)
     {
-        UnityWebRequest request = UnityWebRequest.Get(ServerIP + "/" + Email + "/" + Password + "/" + tapoIP[which] +"/"+whatTodo);
+        UnityWebRequest request = UnityWebRequest.Get(ServerIP + "/" + Email + "/" + Password + "/" + TapoIP[which] +"/"+whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 
@@ -118,7 +114,7 @@ public class WebManager : MonoBehaviour
     {
         string whatTodo = isOn ? "On" : "Off";
 
-        UnityWebRequest request = UnityWebRequest.Get(ServerIP + "/" + Email + "/" + Password + "/" + tapoIP[which] + "/" + whatTodo);
+        UnityWebRequest request = UnityWebRequest.Get(ServerIP + "/" + Email + "/" + Password + "/" + TapoIP[which] + "/" + whatTodo);
 
         request.SetRequestHeader("ngrok-skip-browser-warning", "1");
 

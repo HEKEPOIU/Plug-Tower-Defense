@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
         closeButton.onClick.AddListener(TogglePlugPannal);
         addPlugButton.onClick.AddListener(() =>
         {
+            if (ipInputField.text == "") return;
             WebManager.Instance.TapoIP.Add(ipInputField.text);
             ipInputField.text = "";
         });
@@ -65,7 +66,7 @@ public class UIManager : MonoBehaviour
     {
         if (e.Action == NotifyCollectionChangedAction.Add)
         {
-            await AddPlugIcon(plugs.Count - 1);
+            await AddPlugIcon(plugs.Count);
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
@@ -74,6 +75,7 @@ public class UIManager : MonoBehaviour
                 Destroy(plugs[e.OldStartingIndex]);
                 plugs.RemoveAt(e.OldStartingIndex);
                 plugsToggleList.RemoveAt(e.OldStartingIndex);
+                plugsInputList.RemoveAt(e.OldStartingIndex);
 
             }
             catch (Exception exception)
@@ -112,24 +114,22 @@ public class UIManager : MonoBehaviour
     {
         GameObject plugButton = Instantiate(plugPrefab, plugList.transform, false);
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
+        InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
+        Toggle toggle = plugButton.GetComponent<Toggle>();
+        plugs.Add(plugButton);
+        plugsToggleList.Add(toggle);
+        plugsInputList.Add(plugsInput);
         try
         {
             string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
-            InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
-            Toggle toggle = plugButton.GetComponent<Toggle>();
             plugsInput.text = plugInform[3];
             toggle.isOn = Convert.ToBoolean(plugInform[1]);
             
-            plugs.Add(plugButton);
-            plugsToggleList.Add(toggle);
-            plugsInputList.Add(plugsInput);
         }
         catch (Exception e)
         {
-            print(e);
             print("找不到對應IP插座。");
-            Destroy(plugButton);
-            
+            WebManager.Instance.TapoIP.RemoveAt(index);
             return;
         }
 

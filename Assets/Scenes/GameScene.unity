@@ -1260,7 +1260,7 @@ MonoBehaviour:
 =======
   musicOnSprite: {fileID: 505123442, guid: 0d4a2738baa2b214c89400dcc64923f3, type: 3}
   musicOffSprite: {fileID: 1900441688, guid: 0d4a2738baa2b214c89400dcc64923f3, type: 3}
-  addPlugButton: {fileID: 297016433}
+  addPlugButton: {fileID: 1558828342}
   ipInputField: {fileID: 621439005}
   plugList: {fileID: 912736172}
   plugPrefab: {fileID: 5654852108864923975, guid: b37bb002a4cc4f64caf54b1684c2f83e, type: 3}
@@ -3890,6 +3890,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
         m_MethodName: PlayUiAudio
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1502933909}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1447707841}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-
         MoneyJump(moneyJumpSpeed);
     }
 
