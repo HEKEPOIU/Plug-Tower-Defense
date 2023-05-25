@@ -15,13 +15,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
     [SerializeField] Text monetBarText;
-<<<<<<< HEAD
-=======
+
+
     [SerializeField] Sprite musicOnSprite;
     [SerializeField] Sprite musicOffSprite;
     [SerializeField] Button addPlugButton;
     [SerializeField] InputField ipInputField;
->>>>>>> cd6acc6d21e4944806a5ff4092b3b0e639b3f60f
+
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
@@ -33,10 +33,8 @@ public class UIManager : MonoBehaviour
     async void Start()
     {
         musicToggle.onValueChanged.AddListener(ToggleMusic);
-<<<<<<< HEAD
-        downListToggle.onValueChanged.AddListener(ToggleDownlist);
-=======
->>>>>>> cd6acc6d21e4944806a5ff4092b3b0e639b3f60f
+
+
         settingButton.onClick.AddListener(TogglePlugPannal);
         closeButton.onClick.AddListener(TogglePlugPannal);
         addPlugButton.onClick.AddListener(() =>
