@@ -26,15 +26,15 @@ public class GameManager : MonoBehaviour
     void MoneyJump(float speed,int moneyMult = 1)
     {
         if (!(currentTime > nextTime)) return;
-        int openPlugnum = 0;
+        int openPlugins = 0;
         foreach (var item in uiManager.plugsToggleList)
         {
             if (item.isOn == true)
             {
-                openPlugnum++;
+                openPlugins++;
             }
         }
-        money += openPlugnum * moneyMult;
+        money += openPlugins * moneyMult;
         uiManager.MoneyChange(money.ToString());
         nextTime = currentTime + speed;
     }

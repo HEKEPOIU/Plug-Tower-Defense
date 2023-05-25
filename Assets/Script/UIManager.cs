@@ -11,24 +11,39 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] Toggle musicToggle;
-    [SerializeField] Toggle downListToggle;
     [SerializeField] Button settingButton;
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
     [SerializeField] Text monetBarText;
+<<<<<<< HEAD
+=======
+    [SerializeField] Sprite musicOnSprite;
+    [SerializeField] Sprite musicOffSprite;
+    [SerializeField] Button addPlugButton;
+    [SerializeField] InputField ipInputField;
+>>>>>>> cd6acc6d21e4944806a5ff4092b3b0e639b3f60f
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
     [SerializeField] GameObject plugPrefab;
     readonly List<GameObject> plugs = new List<GameObject>();
     public List<Toggle> plugsToggleList;
+    public List<InputField> plugsInputList;
     // Start is called before the first frame update
     async void Start()
     {
         musicToggle.onValueChanged.AddListener(ToggleMusic);
+<<<<<<< HEAD
         downListToggle.onValueChanged.AddListener(ToggleDownlist);
+=======
+>>>>>>> cd6acc6d21e4944806a5ff4092b3b0e639b3f60f
         settingButton.onClick.AddListener(TogglePlugPannal);
         closeButton.onClick.AddListener(TogglePlugPannal);
+        addPlugButton.onClick.AddListener(() =>
+        {
+            WebManager.Instance.TapoIP.Add(ipInputField.text);
+            ipInputField.text = "";
+        });
 
         //init Plug
 
@@ -56,19 +71,22 @@ public class UIManager : MonoBehaviour
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            Destroy(plugs[e.OldStartingIndex]);
-            plugs.RemoveAt(e.OldStartingIndex);
-            plugsToggleList.RemoveAt(e.OldStartingIndex);
+            try
+            {
+                Destroy(plugs[e.OldStartingIndex]);
+                plugs.RemoveAt(e.OldStartingIndex);
+                plugsToggleList.RemoveAt(e.OldStartingIndex);
+
+            }
+            catch (Exception exception)
+            {
+                print(exception);
+            }
         }
     }
     void ToggleMusic(bool isMute)
     {
         MusicManager.Instance.MuteMusic(!isMute);
-    }
-    void ToggleDownlist(bool isDownListVisible)
-    {
-        if (isDownListVisible) downListToggle.transform.DOMoveY(-190,.5f);
-        else downListToggle.transform.DOMoveY(0, .5f);
     }
     void TogglePlugPannal()
     {
@@ -83,21 +101,37 @@ public class UIManager : MonoBehaviour
             isplugPannalVisible = true;
         }
     }
+
+    public void SwitchPlugName()
+    {
+        foreach (InputField input in plugsInputList)
+        {
+            input.interactable = !input.interactable;
+        }
+    }
+    
     async Task AddPlugIcon(int index)
     {
         GameObject plugButton = Instantiate(plugPrefab, plugList.transform, false);
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
         try
         {
+            string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
+            InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
             Toggle toggle = plugButton.GetComponent<Toggle>();
-            toggle.isOn = Convert.ToBoolean((await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ")[1]);
+            plugsInput.text = plugInform[3];
+            toggle.isOn = Convert.ToBoolean(plugInform[1]);
+            
             plugs.Add(plugButton);
             plugsToggleList.Add(toggle);
+            plugsInputList.Add(plugsInput);
         }
         catch (Exception e)
         {
             print(e);
             print("找不到對應IP插座。");
+            Destroy(plugButton);
+            
             return;
         }
 
@@ -105,6 +139,6 @@ public class UIManager : MonoBehaviour
 
     public void MoneyChange(string value)
     {
-        monetBarText.text = value;
+        monetBarText.text = "$ "+ value;
     }
 }
