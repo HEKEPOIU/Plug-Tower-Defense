@@ -16,21 +16,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
     [SerializeField] Text monetBarText;
-    [SerializeField] Sprite musicOnSprite;
-    [SerializeField] Sprite musicOffSprite;
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
     [SerializeField] GameObject plugPrefab;
-    Image musicImage;
     readonly List<GameObject> plugs = new List<GameObject>();
     public List<Toggle> plugsToggleList;
     // Start is called before the first frame update
     async void Start()
     {
-        musicImage = musicToggle.GetComponent<Image>();
         musicToggle.onValueChanged.AddListener(ToggleMusic);
-        // downListToggle.onValueChanged.AddListener(ToggleDownlist);
+        downListToggle.onValueChanged.AddListener(ToggleDownlist);
         settingButton.onClick.AddListener(TogglePlugPannal);
         closeButton.onClick.AddListener(TogglePlugPannal);
 
@@ -68,7 +64,6 @@ public class UIManager : MonoBehaviour
     void ToggleMusic(bool isMute)
     {
         MusicManager.Instance.MuteMusic(!isMute);
-        musicImage.sprite = !isMute ? musicOnSprite : musicOffSprite;
     }
     void ToggleDownlist(bool isDownListVisible)
     {
