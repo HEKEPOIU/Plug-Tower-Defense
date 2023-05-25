@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject plugList;
     [SerializeField] GameObject plugPrefab;
+    [SerializeField] Sprite plugOnSprite;
+    [SerializeField] Sprite plugOffSprite;
     Image musicImage;
     readonly List<GameObject> plugs = new List<GameObject>();
     public List<Toggle> plugsToggleList;
@@ -49,7 +51,12 @@ public class UIManager : MonoBehaviour
             plugs[i].GetComponent<Toggle>().onValueChanged.AddListener(async (bool change) =>
             {
                 MusicManager.Instance.PlayPlugAudio();
+                plugs[p].GetComponent<Image>().sprite = change ? plugOnSprite : plugOffSprite;
                 await WebManager.Instance.SwitchPluginSocket(p, change);
+            });
+            plugsInputList[i].GetComponent<InputField>().onEndEdit.AddListener(async (string text) =>
+            {
+                await WebManager.Instance.ChangePluginNameSocket(p, text);
             });
         }
         //當TapoIP數量改變時時，改變UI。
@@ -62,7 +69,19 @@ public class UIManager : MonoBehaviour
     {
         if (e.Action == NotifyCollectionChangedAction.Add)
         {
-            await AddPlugIcon(plugs.Count - 1);
+            
+            await AddPlugIcon(plugs.Count);
+            int plugIndex = plugs.Count - 1;
+            plugsInputList[plugIndex].onEndEdit.AddListener(async (string text) =>
+            {
+                await WebManager.Instance.ChangePluginNameSocket(plugIndex, text);
+            });
+            plugsToggleList[plugIndex].onValueChanged.AddListener(async (bool change) =>
+            {
+                MusicManager.Instance.PlayPlugAudio();
+                plugs[plugIndex].GetComponent<Image>().sprite = change ? plugOnSprite : plugOffSprite;
+                await WebManager.Instance.SwitchPluginSocket(plugIndex, change);
+            });
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
@@ -71,6 +90,7 @@ public class UIManager : MonoBehaviour
                 Destroy(plugs[e.OldStartingIndex]);
                 plugs.RemoveAt(e.OldStartingIndex);
                 plugsToggleList.RemoveAt(e.OldStartingIndex);
+                plugsInputList.RemoveAt(e.OldStartingIndex);
 
             }
             catch (Exception exception)
@@ -110,24 +130,22 @@ public class UIManager : MonoBehaviour
     {
         GameObject plugButton = Instantiate(plugPrefab, plugList.transform, false);
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
+        InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
+        Toggle toggle = plugButton.GetComponent<Toggle>();
+        plugs.Add(plugButton);
+        plugsToggleList.Add(toggle);
+        plugsInputList.Add(plugsInput);
         try
         {
             string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
-            InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
-            Toggle toggle = plugButton.GetComponent<Toggle>();
             plugsInput.text = plugInform[3];
             toggle.isOn = Convert.ToBoolean(plugInform[1]);
             
-            plugs.Add(plugButton);
-            plugsToggleList.Add(toggle);
-            plugsInputList.Add(plugsInput);
         }
         catch (Exception e)
         {
-            print(e);
             print("找不到對應IP插座。");
-            Destroy(plugButton);
-            
+            WebManager.Instance.TapoIP.RemoveAt(index);
             return;
         }
 

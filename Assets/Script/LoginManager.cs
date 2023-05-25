@@ -21,11 +21,12 @@ public class LoginManager : MonoBehaviour
     private void Awake()
     {
         //if login before, skip the login page.
-        // if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
-        // WebManager.Instance.Email = PlayerPrefs.GetString("Email");
-        // WebManager.Instance.Password = PlayerPrefs.GetString("Password");
-        // WebManager.Instance.TapoIP.Add(PlayerPrefs.GetString("PlugIp01"));
-        // SceneManager.LoadScene(1);
+        if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
+        WebManager.Instance.Email = PlayerPrefs.GetString("Email");
+        WebManager.Instance.Password = PlayerPrefs.GetString("Password");
+        WebManager.Instance.TapoIP.Add(PlayerPrefs.GetString("PlugIp01"));
+        WebManager.Instance.ServerIP = PlayerPrefs.GetString("ServerIp");
+        SceneManager.LoadScene(1);
     }
 
     void Start()
