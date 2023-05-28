@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+//And also this UI system need to be put on Ui namespace.
+//better for manage.
 public class UIManager : MonoBehaviour
 {
 
+    //UIManager Class is too big now, I need split it to some small class.
+    //but i lazy to do it, so i just write some note remind future me.
     [SerializeField] Toggle musicToggle;
     [SerializeField] Button settingButton;
     [SerializeField] Button closeButton;
@@ -19,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite musicOffSprite;
     [SerializeField] Button addPlugButton;
     [SerializeField] InputField ipInputField;
+    [SerializeField] TowerUi towerUi;
     bool isplugPannalVisible = false;
 
     [SerializeField] GameObject plugList;
@@ -29,13 +33,13 @@ public class UIManager : MonoBehaviour
     readonly List<GameObject> plugs = new List<GameObject>();
     public List<Toggle> plugsToggleList;
     public List<InputField> plugsInputList;
-    // Start is called before the first frame update
     async void Start()
     {
         musicImage = musicToggle.GetComponent<Image>();
         musicToggle.onValueChanged.AddListener(ToggleMusic);
         settingButton.onClick.AddListener(TogglePlugPannal);
         closeButton.onClick.AddListener(TogglePlugPannal);
+        PlayerInputManager.Instance.OnGrab += Grab;
         addPlugButton.onClick.AddListener(() =>
         {
             WebManager.Instance.TapoIP.Add(ipInputField.text);
@@ -61,6 +65,11 @@ public class UIManager : MonoBehaviour
         }
         //當TapoIP數量改變時時，改變UI。
         WebManager.Instance.TapoIP.CollectionChanged += TapoIP_CollectionChanged;
+    }
+
+    void Grab(Vector2 dir)
+    {
+        towerUi.OpenToggle(dir.y > 0);
     }
 
     //這樣之後我只要改變TapoIP長度就可以一起改ui跟列表，但目前待測試。

@@ -18,7 +18,7 @@ public class LoginManager : MonoBehaviour
     [SerializeField] GameObject[] panel; 
 
 
-    private void Awake()
+    void Awake()
     {
         //if login before, skip the login page.
         if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
@@ -40,6 +40,8 @@ public class LoginManager : MonoBehaviour
 
         loginPannal.transform.DOLocalMoveY(-40, 1f).SetEase(Ease.InOutSine);
     }
+    
+        
 
 
     bool IsvalidEmail(string email)
