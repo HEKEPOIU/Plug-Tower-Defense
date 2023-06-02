@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -25,16 +26,9 @@ public class GameManager : MonoBehaviour
     void MoneyJump(float speed,int moneyMult = 1)
     {
         if (!(currentTime > nextTime)) return;
-        int openPlugins = 0;
-        foreach (var item in uiManager.plugsToggleList)
-        {
-            if (item.isOn == true)
-            {
-                openPlugins++;
-            }
-        }
+        int openPlugins = uiManager.plugsToggleList.Count(item => item.isOn == true);
         money += openPlugins * moneyMult;
-        uiManager.MoneyChange(money.ToString());
+        uiManager.MoneyChange(money);
         nextTime = currentTime + speed;
     }
 }

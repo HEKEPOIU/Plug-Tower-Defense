@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button closeButton;
     [SerializeField] Image plugPannal;
     [SerializeField] Text monetBarText;
+    [SerializeField] Slider monetBarSlider;
     [SerializeField] Sprite musicOnSprite;
     [SerializeField] Sprite musicOffSprite;
     [SerializeField] Button addPlugButton;
@@ -160,8 +161,9 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void MoneyChange(string value)
+    public void MoneyChange(int value)
     {
         monetBarText.text = "$ "+ value;
+        monetBarSlider.value = value;
     }
 }

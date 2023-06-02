@@ -4,10 +4,12 @@
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject[] enemyPrefabs;
-    Enemy[] enemy;
     [SerializeField] float spawnTime = 1;
     [SerializeField] Path path;
+    Enemy[] enemy;
     Transform[] spawnPoint;
+    int maxEnemy = 1;
+    int enmeyCount = 0;
 
     Transform[] target;
     
@@ -25,15 +27,17 @@ public class Spawner : MonoBehaviour
         {
             enemy[i] = enemyPrefabs[i].GetComponent<Enemy>();
             enemy[i].path = path;
+            enemy[i].end = spawnPoint[0];
         }
     }
 
     void Update()
     {
         spawnTime -= Time.deltaTime;
-        if (spawnTime <= 0)
+        if (spawnTime <= 0 && maxEnemy >= enmeyCount)
         {
             spawnTime = 1;
+            enmeyCount++;
             Spawn();
         }
     }

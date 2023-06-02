@@ -512,8 +512,8 @@ TextureImporter:
         serializedVersion: 2
         x: 657
         y: 635
-        width: 20
-        height: 32
+        width: 31
+        height: 33
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -523,27 +523,6 @@ TextureImporter:
       bones: []
       spriteID: 9fd521ae2a9fe6d419f59f0a474ad43b
       internalID: 504346934
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "\u50CF\u7D20\u7269\u4EF6_20"
-      rect:
-        serializedVersion: 2
-        x: 675
-        y: 640
-        width: 13
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 648199669c6c589419e4fda0e44a6a06
-      internalID: -328638388
       vertices: []
       indices: 
       edges: []

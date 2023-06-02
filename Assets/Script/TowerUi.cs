@@ -22,4 +22,6 @@ public class TowerUi : MonoBehaviour
     {
         transform.DOMove(isOn == true ? onPosition: offPosition, .5f).SetEase(Ease.InOutSine);
     }
+
+    
 }
