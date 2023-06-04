@@ -4,27 +4,33 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 //And also this UI system need to be put on Ui namespace.
 //better for manage.
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
 
     //UIManager Class is too big now, I need split it to some small class.
     //but i lazy to do it, so i just write some note remind future me.
     [SerializeField] Toggle musicToggle;
     [SerializeField] Button settingButton;
     [SerializeField] Button closeButton;
-    [SerializeField] Image plugPannal;
+    [SerializeField] Image plugPanel;
+    [SerializeField] Image lostPanel;
     [SerializeField] Text monetBarText;
     [SerializeField] Slider monetBarSlider;
+    [SerializeField] Slider hpBarSlider;
     [SerializeField] Sprite musicOnSprite;
     [SerializeField] Sprite musicOffSprite;
     [SerializeField] Button addPlugButton;
     [SerializeField] InputField ipInputField;
     [SerializeField] TowerUi towerUi;
-    bool isplugPannalVisible = false;
+    bool isplugPanelVisible = false;
+    bool islostPanelVisible = false;
+    
 
     [SerializeField] GameObject plugList;
     [SerializeField] GameObject plugPrefab;
@@ -32,8 +38,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] Sprite plugOffSprite;
     Image musicImage;
     readonly List<GameObject> plugs = new List<GameObject>();
-    public List<Toggle> plugsToggleList;
-    public List<InputField> plugsInputList;
+    public List<Toggle> plugsToggleList = new List<Toggle>();
+    public List<InputField> plugsInputList = new List<InputField>();
+    List<Image> plugsImageList = new List<Image>();
+
+    void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        Instance = this;
+    }
     async void Start()
     {
         musicImage = musicToggle.GetComponent<Image>();
@@ -56,7 +72,7 @@ public class UIManager : MonoBehaviour
             plugs[i].GetComponent<Toggle>().onValueChanged.AddListener(async (bool change) =>
             {
                 MusicManager.Instance.PlayPlugAudio();
-                plugs[p].GetComponent<Image>().sprite = change ? plugOnSprite : plugOffSprite;
+                plugsImageList[p].sprite = change ? plugOnSprite : plugOffSprite;
                 await WebManager.Instance.SwitchPluginSocket(p, change);
             });
             plugsInputList[i].GetComponent<InputField>().onEndEdit.AddListener(async (string text) =>
@@ -89,7 +105,7 @@ public class UIManager : MonoBehaviour
             plugsToggleList[plugIndex].onValueChanged.AddListener(async (bool change) =>
             {
                 MusicManager.Instance.PlayPlugAudio();
-                plugs[plugIndex].GetComponent<Image>().sprite = change ? plugOnSprite : plugOffSprite;
+                plugsImageList[plugIndex].sprite = change ? plugOnSprite : plugOffSprite;
                 await WebManager.Instance.SwitchPluginSocket(plugIndex, change);
             });
         }
@@ -101,6 +117,7 @@ public class UIManager : MonoBehaviour
                 plugs.RemoveAt(e.OldStartingIndex);
                 plugsToggleList.RemoveAt(e.OldStartingIndex);
                 plugsInputList.RemoveAt(e.OldStartingIndex);
+                plugsImageList.RemoveAt(e.OldStartingIndex);
 
             }
             catch (Exception exception)
@@ -109,6 +126,17 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    
+    public void UpdatePlugState(int index, string inform)
+    {
+        string[] informs = inform.Split();
+        bool isOn = Convert.ToBoolean(informs[1]);
+        plugsToggleList[index].isOn = isOn;
+        plugsImageList[index].sprite = isOn ? plugOnSprite : plugOffSprite;
+        plugsInputList[index].text = informs[3];
+        
+    }
+    
     void ToggleMusic(bool isMute)
     {
         MusicManager.Instance.MuteMusic(!isMute);
@@ -116,15 +144,29 @@ public class UIManager : MonoBehaviour
     }
     void TogglePlugPannal()
     {
-        if (isplugPannalVisible)
+        if (isplugPanelVisible)
         {
-            plugPannal.transform.DOScale(Vector3.zero, .3F);
-            isplugPannalVisible = false;
+            plugPanel.transform.DOScale(Vector3.zero, .3F);
+            isplugPanelVisible = false;
         }
         else
         {
-            plugPannal.transform.DOScale(Vector3.one, .3F);
-            isplugPannalVisible = true;
+            plugPanel.transform.DOScale(Vector3.one, .3F);
+            isplugPanelVisible = true;
+        }
+    }
+
+    public void ToggleLostPanel()
+    {
+        if (islostPanelVisible)
+        {
+            lostPanel.transform.DOScale(Vector3.zero, .3F);
+            isplugPanelVisible = false;
+        }
+        else
+        {
+            lostPanel.transform.DOScale(Vector3.one, .3F);
+            isplugPanelVisible = true;
         }
     }
 
@@ -142,14 +184,17 @@ public class UIManager : MonoBehaviour
         plugButton.GetComponentInChildren<Text>().text = "" + (index + 1);
         InputField plugsInput = plugButton.GetComponentInChildren<InputField>();
         Toggle toggle = plugButton.GetComponent<Toggle>();
+        Image plugImage = plugButton.GetComponent<Image>();
         plugs.Add(plugButton);
         plugsToggleList.Add(toggle);
         plugsInputList.Add(plugsInput);
+        plugsImageList.Add(plugImage);
         try
         {
             string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
             plugsInput.text = plugInform[3];
             toggle.isOn = Convert.ToBoolean(plugInform[1]);
+            plugImage.sprite = Convert.ToBoolean(plugInform[1]) ? plugOnSprite : plugOffSprite;
             
         }
         catch (Exception e)
@@ -166,4 +211,10 @@ public class UIManager : MonoBehaviour
         monetBarText.text = "$ "+ value;
         monetBarSlider.value = value;
     }
+
+    public void HpChange(int value)
+    {
+        hpBarSlider.value = value;
+    }
+    
 }

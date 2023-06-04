@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
@@ -33,6 +34,15 @@ public class CameraBehaviour : MonoBehaviour
         mainCamera.transform.position += move;
     }
 
+    public void TouchDetect(Vector3 touchPosition)
+    {
+        Ray ray = mainCamera.ScreenPointToRay(touchPosition +new Vector3(0,0,3));
+        RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(touchPosition), Vector2.zero);
+        if (hit.collider == null) return;
+        TowerPlace towerPlace = hit.collider.GetComponent<TowerPlace>();
+        towerPlace.Build();
+        BuildManager.Instance.BuildCancel();
+    }
 
     public void CameraZoom(float increment)
     {

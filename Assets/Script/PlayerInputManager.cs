@@ -58,6 +58,8 @@ public class PlayerInputManager : MonoBehaviour
         touch.started += ctx =>
         {
             touchCount++;
+            if (BuildManager.Instance.buildReady == true)
+                cameraBehaviour.TouchDetect(touchPosition.ReadValue<Vector2>());
             isMove = true;
         };
         touch.canceled += ctx =>

@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Threading.Tasks;
+using UnityEngine;
 
 
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject[] enemyPrefabs;
-    [SerializeField] float spawnTime = 1;
     [SerializeField] Path path;
+    [SerializeField] Transform endPoint;
     Enemy[] enemy;
+    [SerializeField] float waveSpawnTime;
     Transform[] spawnPoint;
-    int maxEnemy = 1;
-    int enmeyCount = 0;
+    public int MaxEnemy{get; set;}
 
     Transform[] target;
     
@@ -27,18 +29,16 @@ public class Spawner : MonoBehaviour
         {
             enemy[i] = enemyPrefabs[i].GetComponent<Enemy>();
             enemy[i].path = path;
-            enemy[i].end = spawnPoint[0];
+            enemy[i].end = endPoint;
         }
     }
-
-    void Update()
+    
+    public async void SpawnWave()
     {
-        spawnTime -= Time.deltaTime;
-        if (spawnTime <= 0 && maxEnemy >= enmeyCount)
+        for (int i = 0; i < MaxEnemy; i++)
         {
-            spawnTime = 1;
-            enmeyCount++;
             Spawn();
+            await Task.Delay((int)(waveSpawnTime * 1000 / MaxEnemy));
         }
     }
 

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System;
 using System.Threading.Tasks;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -14,6 +15,12 @@ public class WebManager : MonoBehaviour
 
     public string Email { get; set; }
     public string Password { get; set; }
+    
+    bool onUpdateState = false;
+
+    [SerializeField] float updateTime;
+
+    float timer;
 
     void Awake()
     {
@@ -23,7 +30,20 @@ public class WebManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
+
+        timer = updateTime;
     }
+
+    void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer<=0 && onUpdateState == false)
+        {
+            UpdatePluginListState();
+            timer = updateTime;
+        }
+    }
+
     public ObservableCollection<string> TapoIP { get; } = new ObservableCollection<string>();
     public string ServerIP { get; set; }
 
@@ -91,6 +111,30 @@ public class WebManager : MonoBehaviour
         string receivedMessage  = Encoding.UTF8.GetString(receiveBuffer, 0, bytesRead);
 
         return receivedMessage;
+    }
+
+    async void UpdatePluginListState()
+    {
+        for (int i = 0; i < TapoIP.Count; i++)
+        {
+            try
+            {
+                onUpdateState = true;
+                string plugInform = await GetPluginSocket(i, "BaseInformation");
+                UIManager.Instance.UpdatePlugState(i, plugInform);
+
+            }
+            catch
+            {
+                print("Plug " + TapoIP[i] + " is offline.");
+                TapoIP.RemoveAt(i);
+                i--;
+            }
+            finally
+            {
+                onUpdateState = false;
+            }
+        }
     }
     
 

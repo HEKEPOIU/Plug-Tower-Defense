@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Emission Particle
+  m_Name: Emission TowerPlace
   m_Shader: {fileID: -6465566751694194690, guid: 9379724154d15654d9ea8a92185ac617, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -70,6 +70,5 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _EmissionColor: {r: 1028.0157, g: 6135.9688, b: 5429.208, a: 1}
-    - m_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _EmissionColor: {r: 33.009407, g: 30.16989, b: 67.79352, a: 1}
   m_BuildTextureStacks: []
