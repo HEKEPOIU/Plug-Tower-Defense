@@ -1,0 +1,72 @@
+﻿using System.Threading.Tasks;
+using UnityEngine;
+
+namespace SpawnSystem
+{
+    public class Spawner : MonoBehaviour
+    {
+        [SerializeField] GameObject[] enemyPrefabs;
+        [SerializeField] Path path;
+        [SerializeField] Transform endPoint;
+        Enemy.Enemy[] enemy;
+        [SerializeField] float waveSpawnTime;
+        Transform[] spawnPoint;
+        public int MaxEnemy{get; set;}
+    
+        [HideInInspector] public Transform preGenerate;
+
+        Transform[] target;
+    
+        void Start()
+        {
+            enemy = new Enemy.Enemy[enemyPrefabs.Length];
+            spawnPoint = new Transform[transform.childCount];
+            target = new Transform[spawnPoint.Length];
+            for (int i = 0; i < spawnPoint.Length; i++)
+            {
+                spawnPoint[i] = transform.GetChild(i);
+                target[i] = path.FindNearestPoint(spawnPoint[i].position);
+            }
+            for (int i = 0; i < enemyPrefabs.Length; i++)
+            {
+                enemy[i] = enemyPrefabs[i].GetComponent<Enemy.Enemy>();
+                enemy[i].path = path;
+                enemy[i].end = endPoint;
+
+            }
+        }
+    
+        // bug: if invoke too quick, will have out of range exception, i'm not sure why
+        public async Task SpawnWave()
+        {
+            //spawn enemy on preGenerate position, that is out of screen, cache them and spawn them later
+            GameObject[] enemys = new GameObject[MaxEnemy];
+            int[] spawnIndexArr = new int[MaxEnemy];
+            for (int i = 0; i < MaxEnemy; i++)
+            {
+                int index = Random.Range(0, enemyPrefabs.Length);
+                int spawnIndex = Random.Range(0, spawnPoint.Length);
+                spawnIndexArr[i] = spawnIndex;
+                enemy[index].target = target[spawnIndex];
+                enemy[index].spawnPoint = spawnPoint[spawnIndex];
+                enemys[i] = Instantiate(enemyPrefabs[index],
+                    preGenerate.position, Quaternion.identity);
+            }
+        
+            Tower.Tower.Enemies.AddRange(enemys);
+        
+            for (int i = 0; i < MaxEnemy; i++)
+            {
+                Spawn(enemys, spawnIndexArr,i);
+                await Task.Delay((int)(waveSpawnTime * 1000 / MaxEnemy));
+            }
+        }
+
+        void Spawn(GameObject[] enemys, int[] spawnIndexArr , int index)
+        {
+            enemys[index].transform.position = spawnPoint[spawnIndexArr[index]].position;
+
+        }
+
+    }
+}
