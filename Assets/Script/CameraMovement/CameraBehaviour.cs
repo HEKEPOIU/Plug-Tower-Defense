@@ -38,9 +38,12 @@ namespace CameraMovement
 
         public void TouchDetect(Vector3 touchPosition)
         {
-            Ray ray = mainCamera.ScreenPointToRay(touchPosition +new Vector3(0,0,3));
             RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(touchPosition), Vector2.zero);
-            if (hit.collider == null) return;
+            if (hit.collider == null)
+            {
+                // BuildManager.Instance.BuildCancel();
+                return;
+            }
             TowerPlace towerPlace = hit.collider.GetComponent<TowerPlace>();
             towerPlace.Build();
             BuildManager.Instance.BuildCancel();

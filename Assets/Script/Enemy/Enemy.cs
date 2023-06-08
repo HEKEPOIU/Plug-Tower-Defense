@@ -54,7 +54,8 @@ namespace Enemy
 
         void Death()
         {
-            GameManager.Instance.Money += Mathf.FloorToInt(dropMoney * (1 + (WaveManager.CurrentWave / 5) * 1.5f)) ;
+            GameManager.Instance.Money += Mathf.FloorToInt(dropMoney * (1 + (WaveManager.CurrentWave / 5) * 1.5f));
+            UIManager.Instance.MoneyChange(GameManager.Instance.Money);
             Destroy(gameObject);
         }
     

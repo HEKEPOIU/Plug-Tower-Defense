@@ -7,6 +7,7 @@ namespace Manager
     public class PlayerInputManager : MonoBehaviour
     {
         public delegate void GrabAction(Vector2 dir);
+        public event GrabAction OnGrab;
         public static PlayerInputManager Instance { get; private set; }
     
         [SerializeField] float scaleSpeed = 0.5f;
@@ -20,7 +21,6 @@ namespace Manager
 
         int touchCount = 0;
 
-        public event GrabAction OnGrab;
         [SerializeField] InputAction touch,touchPosition,touchDelta,secondTouch,secondTouchPosition,secondTouchDelta;
         bool isMove = false;
         void OnEnable()

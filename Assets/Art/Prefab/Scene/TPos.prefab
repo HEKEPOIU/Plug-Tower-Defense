@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 214185406334950638}
   - component: {fileID: -2170503058780147222}
   - component: {fileID: 9095080912999606288}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TPos
   m_TagString: TowerPlace
   m_Icon: {fileID: 0}

@@ -9,27 +9,25 @@ namespace SpawnSystem
         public static int CurrentWave { get; set; } = 1;
         int currentLevel = 0;
         [SerializeField] int levelChangeCount = 5;
-        Spawner[] spawners;
+        Spawner spawners;
         [SerializeField] Transform preGenerate;
 
         void Start()
         {
-            spawners = new Spawner[transform.childCount];
-            for (int i = 0; i < spawners.Length; i++)
-            {
-                spawners[i] = transform.GetChild(i).GetComponent<Spawner>();
-                spawners[i].preGenerate = preGenerate;
-            }
+            spawners = GetComponentInChildren<Spawner>();
+            spawners.preGenerate = preGenerate;
+
         }
     
         public async Task StartWave()
         {
             CurrentWave++;
-            spawners[currentLevel].MaxEnemy = Fibonacci(CurrentWave);
-            await spawners[currentLevel].SpawnWave();
-            if (CurrentWave % levelChangeCount == 0 && currentLevel < spawners.Length - 1)
+            spawners.MaxEnemy = Fibonacci(CurrentWave);
+            await spawners.SpawnWave();
+            if (CurrentWave % levelChangeCount == 0)
             {
                 currentLevel++;
+                spawners = spawners.NextLevel();
             }
         }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Text;
@@ -16,7 +17,8 @@ namespace Manager
 
         public string Email { get; set; }
         public string Password { get; set; }
-    
+        List<string> prePlugName = new List<string>();
+
         bool onUpdateState = false;
 
         [SerializeField] float updateTime;
@@ -116,6 +118,7 @@ namespace Manager
 
         async void UpdatePluginListState()
         {
+            string[] plugName = new string[TapoIP.Count];
             for (int i = 0; i < TapoIP.Count; i++)
             {
                 try

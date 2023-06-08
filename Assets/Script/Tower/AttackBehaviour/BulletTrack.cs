@@ -5,8 +5,8 @@ namespace Tower.AttackBehaviour
 {
     public class BulletTrack : MonoBehaviour
     {
-        [HideInInspector] public Transform target;
         Enemy.Enemy targetToHit;
+        [HideInInspector] public Transform target;
         public static int Damage { get; set; }
         [SerializeField] float speed = 10f;
 
@@ -16,6 +16,7 @@ namespace Tower.AttackBehaviour
             {
                 targetToHit = target.GetComponent<Enemy.Enemy>();
             }
+
         }
 
         void Update()
@@ -36,7 +37,7 @@ namespace Tower.AttackBehaviour
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
             transform.up = dir.normalized;
         }
-        void HitTarget()
+        protected void HitTarget()
         {
             targetToHit.TakeDamage(Damage);
             Destroy(gameObject);

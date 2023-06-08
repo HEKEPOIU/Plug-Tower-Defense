@@ -11,7 +11,7 @@ namespace Manager
         TowerPlace[] towerPlaces;
         public int Cost { get; set; }
     
-        public bool buildReady = false;
+        [HideInInspector] public bool buildReady = false;
 
         void Awake()
         {

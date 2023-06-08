@@ -10,6 +10,8 @@ namespace UI
         [SerializeField]GameObject tower;
         [SerializeField] int cost;
         [SerializeField] Text moneyText;
+        [SerializeField] Image attributeImage;
+        [SerializeField] Sprite onAttributeSprite, offAttributeSprite;
         // Start is called before the first frame update
         void Start()
         {
@@ -23,5 +25,10 @@ namespace UI
             BuildManager.Instance.Cost = cost;
             BuildManager.Instance.BuildReady();
         }
+        public void ToggleAttributeImage(bool toggle)
+        {
+            attributeImage.sprite = toggle ? onAttributeSprite : offAttributeSprite;
+        }
+        
     }
 }

@@ -103,11 +103,13 @@ namespace UI
                 plugsInputList[plugIndex].onEndEdit.AddListener(async (string text) =>
                 {
                     await WebManager.Instance.ChangePluginNameSocket(plugIndex, text);
+                    
                 });
                 plugsToggleList[plugIndex].onValueChanged.AddListener(async (bool change) =>
                 {
                     MusicManager.Instance.PlayPlugAudio();
                     plugsImageList[plugIndex].sprite = change ? plugOnSprite : plugOffSprite;
+                    TowerManager.Instance.AttributeDetect(plugsInputList[plugIndex].text,change);
                     await WebManager.Instance.SwitchPluginSocket(plugIndex, change);
                 });
             }
@@ -136,6 +138,8 @@ namespace UI
             plugsToggleList[index].isOn = isOn;
             plugsImageList[index].sprite = isOn ? plugOnSprite : plugOffSprite;
             plugsInputList[index].text = informs[3];
+            TowerManager.Instance.AttributeDetect(plugsInputList[index].text,isOn);
+
         
         }
     
@@ -195,6 +199,7 @@ namespace UI
             {
                 string[] plugInform = (await WebManager.Instance.GetPluginSocket(index, "BaseInformation")).Split(" ");
                 plugsInput.text = plugInform[3];
+                TowerManager.Instance.AttributeDetect(plugsInput.text,Convert.ToBoolean(plugInform[1]));
                 toggle.isOn = Convert.ToBoolean(plugInform[1]);
                 plugImage.sprite = Convert.ToBoolean(plugInform[1]) ? plugOnSprite : plugOffSprite;
             

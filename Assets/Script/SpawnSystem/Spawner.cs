@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace SpawnSystem
 {
@@ -8,15 +11,26 @@ namespace SpawnSystem
         [SerializeField] GameObject[] enemyPrefabs;
         [SerializeField] Path path;
         [SerializeField] Transform endPoint;
-        Enemy.Enemy[] enemy;
         [SerializeField] float waveSpawnTime;
+        [HideInInspector] public Transform preGenerate;
+
+        public UnityEvent levelEnd;
+        static Transform parent;
+        Enemy.Enemy[] enemy;
         Transform[] spawnPoint;
         public int MaxEnemy{get; set;}
     
-        [HideInInspector] public Transform preGenerate;
 
         Transform[] target;
-    
+
+        void Awake()
+        {
+            if (parent == null)
+            {
+                parent = transform.parent;
+            }
+        }
+
         void Start()
         {
             enemy = new Enemy.Enemy[enemyPrefabs.Length];
@@ -66,6 +80,22 @@ namespace SpawnSystem
         {
             enemys[index].transform.position = spawnPoint[spawnIndexArr[index]].position;
 
+        }
+
+        public Spawner NextLevel()
+        {
+            int currentIndex = transform.GetSiblingIndex();
+            int childCount = parent.childCount;
+            print(currentIndex);
+            print(childCount);
+            if (currentIndex < childCount)
+            {
+                Spawner nextSpawner = parent.GetChild(currentIndex + 1).GetComponent<Spawner>();
+                nextSpawner.preGenerate = preGenerate;
+                levelEnd?.Invoke();
+                return nextSpawner;
+            }
+            else return this;
         }
 
     }
