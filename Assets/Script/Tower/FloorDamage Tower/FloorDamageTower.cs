@@ -20,7 +20,7 @@ namespace Tower.FloorDamage_Tower
             base.Start();
         }
         
-        void UpdateAttack(int newAttackDamage)
+        void UpdateAttack(float newAttackDamage)
         {
             FloorBullet.Damage = newAttackDamage;
             base.UpdateAttack(newAttackDamage);

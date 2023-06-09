@@ -1,4 +1,5 @@
 using System.Linq;
+using SpawnSystem;
 using UI;
 using UnityEngine;
 
@@ -35,7 +36,7 @@ namespace Manager
         void MoneyJump(float speed,int moneyMult = 1)
         {
             if (!(currentTime > nextTime)) return;
-            int openPlugins = UIManager.Instance.plugsToggleList.Count(item => item.isOn == true);
+            int openPlugins = UIManager.Instance.plugsToggleList.Count(item => item.isOn == false);
             Money += openPlugins * moneyMult;
             UIManager.Instance.MoneyChange(Money);
             nextTime = currentTime + speed;
@@ -44,12 +45,19 @@ namespace Manager
         public void Fail()
         {
             UIManager.Instance.ToggleLostPanel();
-            GameReset();
+
         }
 
-        void GameReset()
+        public void GameReset()
         {
-        
+            WaveManager.CurrentWave--;
+            foreach (GameObject obj in Tower.Tower.Enemies)
+            {
+                Destroy(obj);
+            }
+            MusicManager.Instance.SwitchToBgm();
+            UIManager.Instance.ToggleLostPanel();
+            Tower.Tower.Enemies.Clear();
         }
     }
 }

@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5375c348769b447aaff00afc8e93145c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerAttributes: 0
+  placeColor: {r: 0.3137255, g: 1.0352942, b: 1.945098, a: 1}
+  towerAttributes: 2
   range: 4
   attackSpeed: 1.5
   attackDamage: 15
+  fireEffect: {fileID: 0}
   firePoint: {fileID: 8472583066560632500}
   bulletPrefab: {fileID: 4260902805508810679, guid: 276e314380f3c9048bdb7a40910064f2, type: 3}
 --- !u!1 &4804059276001241160

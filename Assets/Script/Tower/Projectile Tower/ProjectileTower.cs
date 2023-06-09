@@ -14,7 +14,7 @@ namespace Tower.Projectile_Tower
             base.Start();
         }
         
-        void UpdateAttack(int newAttackDamage)
+        void UpdateAttack(float newAttackDamage)
         {
             BulletTrack.Damage = newAttackDamage;
             base.UpdateAttack(newAttackDamage);

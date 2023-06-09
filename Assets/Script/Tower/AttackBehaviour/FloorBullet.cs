@@ -10,7 +10,7 @@ namespace Tower.AttackBehaviour
         float timer;
         public static float DamageTime{ get; set; }
         
-        public static int Damage { get; set; }
+        public static float Damage { get; set; }
         public static float Duration { get; set; } = 2.0f;
         public static float Radius { get; set; } = 1.2f;
 
@@ -31,7 +31,7 @@ namespace Tower.AttackBehaviour
                 foreach (RaycastHit2D hit in hits)
                 {
                     //need to be change, it slow, but it work, and I don't have Time to fix it.
-                    hit.transform.GetComponent<Enemy.Enemy>().TakeDamage(Damage);
+                    hit.transform.GetComponent<Enemy.Enemy>().TakeDamage(UnityEngine.Random.value <= Tower.CriticalRate ? (int)Damage*2 : (int)Damage);
                 }
 
                 timer = DamageTime;

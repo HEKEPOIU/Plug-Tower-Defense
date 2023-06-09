@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8577896332283675208}
   - component: {fileID: 61525389452821438}
   - component: {fileID: 2797119053917060389}
+  - component: {fileID: 5116129344290699253}
   m_Layer: 0
   m_Name: Wind
   m_TagString: Untagged
@@ -31,6 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8481743198041322692}
+  - {fileID: 2990376142079956237}
   m_Father: {fileID: 4087536414677610011}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,6 +109,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5116129344290699253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555152418176551866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 824141c37343445b952fb4e0e5d5c406, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAnimateEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 306683016156374512}
+        m_TargetAssemblyTypeName: Tower.Projectile_Tower.ProjectileTower, Assembly-CSharp
+        m_MethodName: InitBullet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4847770977902316064
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4087536414677610011}
-  - component: {fileID: -147663208034571349}
+  - component: {fileID: 306683016156374512}
   m_Layer: 0
   m_Name: "\u98A8\u5854"
   m_TagString: Untagged
@@ -140,7 +169,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-147663208034571349
+--- !u!114 &306683016156374512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,13 +178,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4847770977902316064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec9ef7d9b6f4d1baf7c1b39431914fe, type: 3}
+  m_Script: {fileID: 11500000, guid: cc3202c082b24b6a9fb7bcab9fcba609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeColor: {r: 0.72156864, g: 2.3529413, b: 0.21960784, a: 0}
   towerAttributes: 1
   range: 4
   attackSpeed: 6
   attackDamage: 5
+  fireEffect: {fileID: 0}
+  firePoint: {fileID: 2990376142079956237}
+  bulletPrefab: {fileID: 3932972820519449571, guid: 0923bf5cc2e0e8246a1e18f6e0f57e64, type: 3}
 --- !u!1 &6548964540785309123
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,3 +273,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8749231577876870445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2990376142079956237}
+  m_Layer: 0
+  m_Name: FirePoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2990376142079956237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8749231577876870445}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8577896332283675208}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

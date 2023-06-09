@@ -181,10 +181,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3202c082b24b6a9fb7bcab9fcba609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeColor: {r: 3.7333333, g: 3.2313726, b: 0.53333336, a: 1}
   towerAttributes: 4
   range: 4
   attackSpeed: 3
   attackDamage: 10
+  fireEffect: {fileID: 0}
   firePoint: {fileID: 171073947762160593}
   bulletPrefab: {fileID: 1153602144011698760, guid: 14d2aab0b4b987042bca1e2b1f7caea3, type: 3}
 --- !u!1 &6263676032150764655

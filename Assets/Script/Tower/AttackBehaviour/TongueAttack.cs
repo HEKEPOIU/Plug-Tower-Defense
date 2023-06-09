@@ -9,7 +9,7 @@ namespace Tower.AttackBehaviour
         SpriteSkin boneGroup;
         [SerializeField] Transform boneControler;
         [SerializeField] float speed = 1f;
-        public static int Damage { get; set; }
+        public static float Damage { get; set; }
         
         Enemy.Enemy targetToHit;
         [HideInInspector] public Transform target;
@@ -57,7 +57,7 @@ namespace Tower.AttackBehaviour
 
             else if (timer > 1)
             {
-                targetToHit.TakeDamage(Damage);
+                targetToHit.TakeDamage(UnityEngine.Random.value <= Tower.CriticalRate ? (int)Damage*2 : (int)Damage);
                 Destroy(gameObject);
             }
         }

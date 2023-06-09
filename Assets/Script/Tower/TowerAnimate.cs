@@ -1,6 +1,8 @@
 ﻿using System;
+using Manager;
 using Tower.AttackBehaviour;
 using Tower.Projectile_Tower;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -27,6 +29,8 @@ namespace Tower
         {
             tower = GetComponentInParent<Tower>();
             SetSpeed(tower.attackSpeed);
+
+            AddAttackDamageMusic();
         }
 
         void Update()
@@ -42,7 +46,30 @@ namespace Tower
         
         public void ShootAnimateEnd()
         {
+            
             onAnimateEnd?.Invoke();
+        }
+
+        void AddAttackDamageMusic()
+        {
+            switch (tower.towerAttributes)
+            {
+                case TowerAttributes.Fire:
+                    onAnimateEnd.AddListener(()=>MusicManager.Instance.PlayTowerAttackAudio(0));
+                    break;
+                case TowerAttributes.Wind:
+                    onAnimateEnd.AddListener(()=>MusicManager.Instance.PlayTowerAttackAudio(1));
+                    break;
+                case TowerAttributes.Water:
+                    onAnimateEnd.AddListener(()=>MusicManager.Instance.PlayTowerAttackAudio(2));
+                    break;
+                case TowerAttributes.Electromagnetic: 
+                    onAnimateEnd.AddListener(()=>MusicManager.Instance.PlayTowerAttackAudio(3));
+                    break;
+                case TowerAttributes.None:
+                    onAnimateEnd.AddListener(()=>MusicManager.Instance.PlayTowerAttackAudio(4));
+                    break;
+            }
         }
     }
 }

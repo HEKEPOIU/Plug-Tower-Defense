@@ -9,7 +9,7 @@ namespace Manager
 {
     public class TowerManager : MonoBehaviour
     {
-        public List<Tower.Tower> Towers { get;} = new List<Tower.Tower>();
+        public static List<Tower.Tower> Towers { get; set; } = new List<Tower.Tower>();
         [SerializeField] TowerListUI towerListUI;
         
         /// <summary>
@@ -19,7 +19,7 @@ namespace Manager
         /// 3:Electromagnetic,
         /// 4:None
         /// </summary>
-        TowerAttribute[] isAttributeTriggle = new TowerAttribute[5];
+        public TowerAttribute[] isAttributeTriggle = new TowerAttribute[5];
         string[,] attributeNames = new string[,] { { "火","烤箱"} , { "吹風機","電風扇" }, { "熱水器","水壺" }, { "電","微波爐" }};
         public static TowerManager Instance { get; private set; }
 
@@ -46,9 +46,12 @@ namespace Manager
 
         void OnAttributeChange(int index,bool value)
         {
+            int attributeCount = (Towers.Where(tower => tower.towerAttributes == (TowerAttributes)index)).Count();
             foreach (Tower.Tower tower in Towers.Where(tower => tower.towerAttributes == (TowerAttributes) index))
             {
-                tower.EffectToggle(value);
+                
+                tower.EffectToggle(value, attributeCount);
+                
             }
             towerListUI.ToggleAttributeImage(index, value);
         }
@@ -63,12 +66,12 @@ namespace Manager
                 {
                     if (!newName.Contains(attributeNames[i, j])) continue;
 
-                    isAttributeTriggle[i].Value = change;
+                    isAttributeTriggle[i].Value = !change;
                     return;
                 }
             }
             
-            isAttributeTriggle[4].Value = change;
+            isAttributeTriggle[4].Value = !change;
         }
     }
 }

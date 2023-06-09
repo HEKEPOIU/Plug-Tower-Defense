@@ -129,10 +129,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca55fda9a4934ee7b8d7f23ffbd6f480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeColor: {r: 3.6392157, g: 0.53333336, b: 3.7019608, a: 1}
   towerAttributes: 3
   range: 4
   attackSpeed: 0.5
   attackDamage: 5
+  fireEffect: {fileID: 0}
   bulletPrefab: {fileID: 8984200394818550194, guid: 72a918ea54f765a4b9bb7f13a3bb9dda, type: 3}
   duration: 5
   radius: 1.6

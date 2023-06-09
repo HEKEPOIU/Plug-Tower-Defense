@@ -23,6 +23,7 @@ namespace UI
             if (GameManager.Instance.Money < cost) return;
             BuildManager.Instance.Tower = tower;
             BuildManager.Instance.Cost = cost;
+            MusicManager.Instance.PlayClickTowerIconAudio();
             BuildManager.Instance.BuildReady();
         }
         public void ToggleAttributeImage(bool toggle)

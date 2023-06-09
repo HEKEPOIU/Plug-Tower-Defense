@@ -76,10 +76,12 @@ namespace UI
                     MusicManager.Instance.PlayPlugAudio();
                     plugsImageList[p].sprite = change ? plugOnSprite : plugOffSprite;
                     await WebManager.Instance.SwitchPluginSocket(p, change);
+                    TowerManager.Instance.AttributeDetect(plugsInputList[p].text,change);
                 });
                 plugsInputList[i].GetComponent<InputField>().onEndEdit.AddListener(async (string text) =>
                 {
                     await WebManager.Instance.ChangePluginNameSocket(p, text);
+                    TowerManager.Instance.AttributeDetect(text,plugs[p].GetComponent<Toggle>().isOn);
                 });
             }
             //當TapoIP數量改變時時，改變UI。
@@ -109,8 +111,8 @@ namespace UI
                 {
                     MusicManager.Instance.PlayPlugAudio();
                     plugsImageList[plugIndex].sprite = change ? plugOnSprite : plugOffSprite;
-                    TowerManager.Instance.AttributeDetect(plugsInputList[plugIndex].text,change);
                     await WebManager.Instance.SwitchPluginSocket(plugIndex, change);
+                    TowerManager.Instance.AttributeDetect(plugsInputList[plugIndex].text,change);
                 });
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -172,7 +174,7 @@ namespace UI
             else
             {
                 lostPanel.transform.DOScale(Vector3.one, .3F);
-                isplugPanelVisible = true;
+                islostPanelVisible = true;
             }
         }
 

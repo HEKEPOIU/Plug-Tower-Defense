@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using System;
+using Manager;
 using UI;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Tower
     public class TowerPlace : MonoBehaviour
     {
         GameObject tower;
+        Tower towerScript;
         SpriteRenderer childRenderer;
         Material childMaterial;
         [ColorUsage(true, true)]
@@ -21,7 +23,15 @@ namespace Tower
             childRenderer.color = normalColor;
             childMaterial.SetColor(EmissionColor, normalColor);
         }
-    
+
+        void Update()
+        {
+            if (tower != null && TowerManager.Instance.isAttributeTriggle[(int)towerScript.towerAttributes].Value == true)
+            {
+                OnCharge(towerScript.placeColor);
+            }
+        }
+
         public void Build()
         {
             if (tower != null || BuildManager.Instance.Tower == null) return;
@@ -29,6 +39,7 @@ namespace Tower
             //Spawn Tower to Child
             GameObject towerToBuild = BuildManager.Instance.Tower;
             tower = Instantiate(towerToBuild, transform.position, Quaternion.identity);
+            towerScript = tower.GetComponent<Tower>();
             tower.transform.SetParent(transform);
         
             //Deduct Money
@@ -57,7 +68,7 @@ namespace Tower
 
         public void OnCharge(Color chargeColor)
         {
-            childRenderer.color = Color.white;
+            childRenderer.color = chargeColor;
             childMaterial.SetColor(EmissionColor, chargeColor);
         }
     }

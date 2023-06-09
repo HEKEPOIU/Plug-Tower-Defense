@@ -30,6 +30,11 @@ namespace SpawnSystem
                 spawners = spawners.NextLevel();
             }
         }
+        
+        public void BackLastWave()
+        {
+            CurrentWave--;
+        }
 
         int Fibonacci(int num)
         {

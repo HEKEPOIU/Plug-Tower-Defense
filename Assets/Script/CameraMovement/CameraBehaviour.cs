@@ -1,6 +1,7 @@
 ﻿using Manager;
 using Tower;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CameraMovement
 {
@@ -8,6 +9,7 @@ namespace CameraMovement
     {
         Camera mainCamera;
         [SerializeField] Transform tR, bL;
+        [SerializeField] Transform bigTr, bigBl;
         float xMax,xMin,yMax,yMin;
         float size;
 
@@ -24,11 +26,12 @@ namespace CameraMovement
 
         void Start()
         {
-            //reset camera position
+            //reset camera position to tutorial
             Vector3 transformSelf = mainCamera.transform.position;
-            float disX = Mathf.Min(transformSelf.x - xMin, xMax - transformSelf.x);
-            mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 5f, disX/2);
-            size = disX / 2;
+            float disXTutorial = Mathf.Min(transformSelf.x - xMin, xMax - transformSelf.x);
+            mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 5f, disXTutorial/2);
+            size = disXTutorial / 2;
+            
         }
 
         public void CameraMove(Vector3 move)
@@ -36,15 +39,28 @@ namespace CameraMovement
             mainCamera.transform.position += move;
         }
 
+        public void TutorialEnd()
+        {
+            Vector3 position = bigTr.position;
+            Vector3 position1 = bigBl.position;
+            xMax = position.x;
+            xMin = position1.x;
+            yMax = position.y;
+            yMin = position1.y;
+            transform.position = new Vector3(xMin + (xMax - xMin)/2, yMin + (yMax - yMin)/2, -10);
+            size = (xMax - xMin)/4;
+            mainCamera.orthographicSize = size;
+        }
+
         public void TouchDetect(Vector3 touchPosition)
         {
             RaycastHit2D hit = Physics2D.Raycast(mainCamera.ScreenToWorldPoint(touchPosition), Vector2.zero);
             if (hit.collider == null)
             {
-                // BuildManager.Instance.BuildCancel();
                 return;
             }
             TowerPlace towerPlace = hit.collider.GetComponent<TowerPlace>();
+            MusicManager.Instance.PlayBuildTowerAudio();
             towerPlace.Build();
             BuildManager.Instance.BuildCancel();
         }

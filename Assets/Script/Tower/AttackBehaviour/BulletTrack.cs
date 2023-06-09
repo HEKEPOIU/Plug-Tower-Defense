@@ -7,7 +7,8 @@ namespace Tower.AttackBehaviour
     {
         Enemy.Enemy targetToHit;
         [HideInInspector] public Transform target;
-        public static int Damage { get; set; }
+        [SerializeField] GameObject hitEffect;
+        public static float Damage { get; set; }
         [SerializeField] float speed = 10f;
 
         void Start()
@@ -39,7 +40,9 @@ namespace Tower.AttackBehaviour
         }
         protected void HitTarget()
         {
-            targetToHit.TakeDamage(Damage);
+            targetToHit.TakeDamage(UnityEngine.Random.value <= Tower.CriticalRate ? (int)Damage*2 : (int)Damage);
+            GameObject effect = Instantiate(hitEffect, transform.position, transform.rotation);
+            Destroy(effect, 1f);
             Destroy(gameObject);
         }
         

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -78,7 +77,10 @@ namespace SpawnSystem
 
         void Spawn(GameObject[] enemys, int[] spawnIndexArr , int index)
         {
-            enemys[index].transform.position = spawnPoint[spawnIndexArr[index]].position;
+            if (enemys[index] != null)
+            {
+                enemys[index].transform.position = spawnPoint[spawnIndexArr[index]].position;
+            }
 
         }
 
@@ -86,9 +88,7 @@ namespace SpawnSystem
         {
             int currentIndex = transform.GetSiblingIndex();
             int childCount = parent.childCount;
-            print(currentIndex);
-            print(childCount);
-            if (currentIndex < childCount)
+            if (currentIndex < childCount-1)
             {
                 Spawner nextSpawner = parent.GetChild(currentIndex + 1).GetComponent<Spawner>();
                 nextSpawner.preGenerate = preGenerate;
@@ -96,6 +96,14 @@ namespace SpawnSystem
                 return nextSpawner;
             }
             else return this;
+        }
+
+        public void OpenSpawnPoint(bool open)
+        {
+            foreach (Transform point in spawnPoint)
+            {
+                point.gameObject.SetActive(open);
+            }
         }
 
     }
