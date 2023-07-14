@@ -22,12 +22,12 @@ namespace Manager
         void Awake()
         {
             //if login before, skip the login page.
-            if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
-            WebManager.Instance.Email = PlayerPrefs.GetString("Email");
-            WebManager.Instance.Password = PlayerPrefs.GetString("Password");
-            WebManager.Instance.TapoIP.Add(PlayerPrefs.GetString("PlugIp01"));
-            WebManager.Instance.ServerIP = PlayerPrefs.GetString("ServerIp");
-            SceneManager.LoadScene(1);
+            // if (PlayerPrefs.GetInt("LoginState", -1) == -1) return;
+            // WebManager.Instance.Email = PlayerPrefs.GetString("Email");
+            // WebManager.Instance.Password = PlayerPrefs.GetString("Password");
+            // WebManager.Instance.TapoIP.Add(PlayerPrefs.GetString("PlugIp01"));
+            // WebManager.Instance.ServerIP = PlayerPrefs.GetString("ServerIp");
+            // SceneManager.LoadScene(1);
         }
 
         void Start()
@@ -69,6 +69,7 @@ namespace Manager
         }
         async void Login()
         {
+            sumitButton.interactable = false;
             WebManager.Instance.TapoIP.Add(inputField[2].text);
             WebManager.Instance.ServerIP = inputField[3].text;
             sumitButton.GetComponentInChildren<Text>().text = "Loading...";
@@ -85,6 +86,7 @@ namespace Manager
                 sumitButton.GetComponentInChildren<Text>().text = "確　認";
                 message.color = errorColor;
                 message.text = "帳號/密碼或插座IP錯誤";
+                sumitButton.interactable = true;
                 return;
             }
             sumitButton.GetComponentInChildren<Text>().text = "成 功！";

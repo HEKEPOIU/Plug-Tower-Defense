@@ -6,10 +6,10 @@ namespace SpawnSystem
     public class WaveManager : MonoBehaviour
     {
         //Wave monsterNumber is Fibonacci sequence
-        public static int CurrentWave { get; set; } = 1;
-        int currentLevel = 0;
-        [SerializeField] int levelChangeCount = 5;
         Spawner spawners;
+        public static int CurrentWave { get; set; } = 1;
+        [SerializeField] int levelChangeCount = 5;
+        int currentLevel = 0;
         [SerializeField] Transform preGenerate;
 
         void Start()

@@ -30,6 +30,10 @@ namespace Tower
             {
                 OnCharge(towerScript.placeColor);
             }
+            else if (tower != null)
+            {
+                OnCharge(normalColor);
+            }
         }
 
         public void Build()

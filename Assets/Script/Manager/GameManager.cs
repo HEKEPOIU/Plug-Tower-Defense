@@ -55,6 +55,8 @@ namespace Manager
             {
                 Destroy(obj);
             }
+            Life = 10;
+            UIManager.Instance.HpChange(Life);
             MusicManager.Instance.SwitchToBgm();
             UIManager.Instance.ToggleLostPanel();
             Tower.Tower.Enemies.Clear();

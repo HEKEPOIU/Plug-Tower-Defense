@@ -1,4 +1,5 @@
-﻿using Tower.AttackBehaviour;
+﻿using Manager;
+using Tower.AttackBehaviour;
 using UnityEngine;
 
 namespace Tower.Tongue_Tower
@@ -23,6 +24,7 @@ namespace Tower.Tongue_Tower
         protected override void Attack()
         {
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            MusicManager.Instance.PlayTowerAttackAudio(2);
             bullet.GetComponent<TongueAttack>().target = Target;
         }
     }

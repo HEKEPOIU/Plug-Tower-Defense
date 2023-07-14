@@ -105,6 +105,7 @@ namespace UI
                 plugsInputList[plugIndex].onEndEdit.AddListener(async (string text) =>
                 {
                     await WebManager.Instance.ChangePluginNameSocket(plugIndex, text);
+                    TowerManager.Instance.AttributeDetect(text,plugs[plugIndex].GetComponent<Toggle>().isOn);
                     
                 });
                 plugsToggleList[plugIndex].onValueChanged.AddListener(async (bool change) =>

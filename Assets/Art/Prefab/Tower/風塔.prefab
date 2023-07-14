@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3202c082b24b6a9fb7bcab9fcba609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeColor: {r: 0.72156864, g: 2.3529413, b: 0.21960784, a: 0}
+  placeColor: {r: 0.72156864, g: 2.3529413, b: 0.21960784, a: 1}
   towerAttributes: 1
   range: 4
   attackSpeed: 6
